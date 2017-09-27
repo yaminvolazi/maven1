@@ -6,9 +6,11 @@ public class MainSelenium {
 		
 		System.out.println("#####  MainSelenium  #####");
 			
-		HotmailClass hotmailClass = new HotmailClass();
+		HotmailClass hotmailClass = new HotmailClass("yamin.volazi@outlook.com","*3yaminvolazi3*");
 		hotmailClass.runDriver();
-		
+		System.out.println("driver start");
+		hotmailClass.logIn();
+		hotmailClass.goToSpam365();
 	}
 
 }
