@@ -8,7 +8,7 @@ import java.util.List;
 public class Proxies
 {
   public static List<Proxy> list = new ArrayList();
-  static String myProxiesPath = "Resources/proxy";
+  static String myProxiesPath = ClassLoader.getSystemResource("proxy").getPath();
   
   public static void doGenerateAllZip() {
     BufferedReader br = null;

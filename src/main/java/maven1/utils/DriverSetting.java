@@ -32,7 +32,7 @@ public class DriverSetting {
 		ChromeDriverService service =
 
 				(ChromeDriverService) ((ChromeDriverService.Builder) ((ChromeDriverService.Builder) ((ChromeDriverService.Builder) new ChromeDriverService.Builder()
-						.usingDriverExecutable(new File("Resources/chromedriver.exe"))).usingAnyFreePort())
+						.usingDriverExecutable(new File(ClassLoader.getSystemResource("chromedriver.exe").getPath()))).usingAnyFreePort())
 								.withEnvironment(com.google.common.collect.ImmutableMap.of("DISPLAY", ":0.0"))).build();
 
 		try {
@@ -125,7 +125,7 @@ public class DriverSetting {
 		ChromeDriverService service =
 
 				(ChromeDriverService) ((ChromeDriverService.Builder) ((ChromeDriverService.Builder) ((ChromeDriverService.Builder) new ChromeDriverService.Builder()
-						.usingDriverExecutable(new File("Resources/chromedriver.exe"))).usingAnyFreePort())
+						.usingDriverExecutable(new File(ClassLoader.getSystemResource("chromedriver.exe").getPath()))).usingAnyFreePort())
 								.withEnvironment(com.google.common.collect.ImmutableMap.of("DISPLAY", ":0.0"))).build();
 
 		try {
@@ -167,7 +167,7 @@ public class DriverSetting {
 		ChromeDriverService service =
 
 				(ChromeDriverService) ((ChromeDriverService.Builder) ((ChromeDriverService.Builder) ((ChromeDriverService.Builder) new ChromeDriverService.Builder()
-						.usingDriverExecutable(new File("Resources/chromedriver.exe"))).usingAnyFreePort())
+						.usingDriverExecutable(new File(ClassLoader.getSystemResource("chromedriver.exe").getPath()))).usingAnyFreePort())
 								.withEnvironment(com.google.common.collect.ImmutableMap.of("DISPLAY", ":0.0"))).build();
 		driver = new ChromeDriver(service);
 		driver.manage().deleteAllCookies();

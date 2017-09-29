@@ -36,9 +36,12 @@ public class HotmailClass {
 	}
 
 	public void runDriver() {
-		System.setProperty("webdriver.chrome.driver", ClassLoader.getSystemResource("chromedriver.exe").getPath());
-		driver = new ChromeDriver();
-		driver.get("https://www.hotmail.com");
+		System.out.println(ClassLoader.getSystemResource("proxyFolder").getPath()+"/proxies/extension_142.54.174.218.zip");
+		this.driver = maven1.utils.DriverSetting.connectUsingProxy(this.ip, this.port, this.proxylogin, this.proxypass);
+		
+		//System.setProperty("webdriver.chrome.driver", ClassLoader.getSystemResource("chromedriver.exe").getPath());
+		//driver = new ChromeDriver();
+		//driver.get("https://www.hotmail.com");
 	}
 
 	public void waiting() {
@@ -55,7 +58,7 @@ public class HotmailClass {
 		}
 	}
 
-	public boolean logIn() {
+	/*public boolean logIn() {
 		if (this.driver != null) {
 			System.out.println("Acces to hotmail");
 			List<WebElement> catpchas;
@@ -97,8 +100,100 @@ public class HotmailClass {
 		}
 		System.out.println("Driver is null ");
 		return false;
-	}
+	}*/
 
+	
+	public boolean logIn() {
+		if (this.driver != null) {
+			System.out.println("Acces to hotmail");
+			this.driver.get("https://www.hotmail.com");
+			List<WebElement> catpchas;
+			try {
+				Thread.sleep(1000L);
+				Thread.sleep(1000L);
+				Thread.sleep(1000L);
+				WebElement Email = this.driver.findElement(By.name("loginfmt"));
+				Email.sendKeys(new CharSequence[] { this.email });
+				WebElement Passwd = this.driver.findElement(By.name("passwd"));
+				if (!Passwd.isDisplayed()) {
+					Email.sendKeys(new CharSequence[] { Keys.ENTER });
+					int counter = 0;
+					Passwd = this.driver.findElement(By.name("passwd"));
+					while ((!Passwd.isDisplayed()) && (counter < 10)) {
+						counter++;
+						Thread.sleep(2000L);
+						System.out.println("waiting ");
+						Passwd = this.driver.findElement(By.name("passwd"));
+					}
+					Thread.sleep(3000L);
+				}
+				try {
+					Passwd.sendKeys(new CharSequence[] { this.password + Keys.ENTER });
+					Thread.sleep(1000L);
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("ERROOOOOOOOOOOOOOOOOOR");
+					//LogWriter.write(LogFiles.ExceptedMails.name(), this.email + ";" + this.password);
+					return false;
+				}
+
+				catpchas = this.driver.findElements(By.className("HipButton"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				//LogWriter.write(LogFiles.ExceptedMails.name(), this.email + ";" + this.password);
+				this.driver.quit();
+				return false;
+			}
+
+			
+			if (!catpchas.isEmpty()) {
+				//resolveCaptcha();
+			}
+
+			System.out.println(this.driver.findElements(By.cssSelector(".errorDiv")).size());
+			List<WebElement> errors = this.driver.findElements(By.cssSelector(".errorDiv"));
+			for (WebElement webElement : errors) {
+				System.out.println("Text " + webElement.getText());
+				if (webElement.getText().length() > 1) {
+					//LogWriter.write("ERRORLOGIN", this.email + ";" + this.password + "  ----> Error is :"
+						//	+ webElement.getText().replaceAll("\n", " "));
+					try {
+						Thread.sleep(2000L);
+					} catch (InterruptedException localInterruptedException) {
+					}
+					return false;
+				}
+			}
+			try {
+				Thread.sleep(4000L);
+				removepopUp();
+				Thread.sleep(1000L);
+
+				boolean AccountBlocked = this.driver.getCurrentUrl().contains("account.live.com/Sai/A");
+				boolean blocked2 = this.driver.getCurrentUrl().contains("account.live.com/identity/confirm");
+				boolean blocked3 = this.driver.getCurrentUrl().contains("account.live.com/Abuse?ru=");
+				boolean blocked5 = this.driver.getCurrentUrl().toLowerCase().contains("account.live.com/proofs");
+
+				boolean blocked4 = this.driver.getCurrentUrl().contains("account.live.com/recover?ru=");
+				if ((AccountBlocked) || (blocked2) || (blocked4)) {
+					//LogWriter.write("LOCKED", this.email + ";" + this.password);
+				}
+
+				if ((blocked3) || (blocked5)) {
+					//LogWriter.write("VERIFICATIONTEL", this.email + ";" + this.password);
+				}
+				if ((AccountBlocked) || (blocked2) || (blocked3) || (blocked4) || (blocked5))
+					return false;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return true;
+		}
+		System.out.println("Driver is null ");
+		return false;
+	}
+	
+	
 	public void clickNext() {
 		try {
 			if (this.driver.getCurrentUrl().contains("https://account.live.com/tou/accrue?ru=")) {
@@ -528,7 +623,7 @@ public class HotmailClass {
 		} catch (Exception localException1) {
 		}
 	}
-
+	
 	public void removepopUp() {
 		clickNext();
 		try {

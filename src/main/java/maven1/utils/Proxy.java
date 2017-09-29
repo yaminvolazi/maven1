@@ -32,14 +32,14 @@ public class Proxy {
 
 	public void generateZip() {
 		try {
-			File manifest = new File("Resources/proxyFolder/manifest.json");
-			File bg = new File("Resources/proxyFolder/background.js");
+			File manifest = new File(ClassLoader.getSystemResource("proxyFolder").getPath()+"/manifest.json");
+			File bg = new File(ClassLoader.getSystemResource("proxyFolder").getPath()+"/background.js");
 
-			File directory = new File("Resources/proxyFolder/proxies");
+			File directory = new File(ClassLoader.getSystemResource("proxyFolder").getPath()+"/proxies");
 			if (!directory.exists()) {
 				directory.mkdir();
 			}
-			FileOutputStream fos = new FileOutputStream("Resources/proxyFolder/proxies/extension_" + this.IP + ".zip");
+			FileOutputStream fos = new FileOutputStream(ClassLoader.getSystemResource("proxyFolder").getPath()+"/proxies/extension_"+ this.IP + ".zip");
 			ZipOutputStream zos = new ZipOutputStream(fos);
 
 			File tmpfile = new File(directory.getAbsolutePath() + "/" + bg.getName());
@@ -60,7 +60,7 @@ public class Proxy {
 			addToZipFile(file2Name, zos, directory.getAbsolutePath());
 			zos.close();
 			fos.close();
-			this.path = ("Resources/proxyFolder/proxies/extension_" + this.IP + ".zip");
+			this.path = (ClassLoader.getSystemResource("proxyFolder").getPath()+"/proxies/extension_" + this.IP + ".zip");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
